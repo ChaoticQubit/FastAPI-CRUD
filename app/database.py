@@ -92,7 +92,7 @@ class Database:
         return self.execute(query)
     
     def update(self, tableName, cols, where, post):
-        query = f"""UPDATE {tableName} SET title = %s, content = %s, published = %s, rating = %s WHERE {where} RETURNING *"""
+        query = f"""UPDATE {tableName} SET {", ".join([f"{col} = %s" for col in cols])} WHERE {where} RETURNING *"""
         return self.execute(query, tuple([post[colName] for colName in cols]))
     
     def delete(self, tableName, post_id):

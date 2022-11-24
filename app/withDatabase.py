@@ -85,16 +85,15 @@ async def delete_post(post_id: int):
 
 
 @app.put("/posts/{post_id}")
-async def update_post(post_id: int, post: Post):
-    global all_posts
-    index, prevPost = hf.find_post(all_posts, post_id)
-    hf.raise404Exception(prevPost)
-    post = post.dict()
-    post["id"] = post_id
-    post["rating"] = prevPost["data"]["rating"]
-    post["published"] = prevPost["data"]["published"]
-    all_posts[index] = post
-    return {
-        "message": "Post updated",
-        "data": all_posts
+async def update_post(post_id: int, post: dict = Body(...)):
+    cols = list(post.keys())
+    checkPost = {
+        "message": "Post found",
+        "data": db_con.select(db.TableConstants.POSTSTABLE, where=f"id = {post_id}")
     }
+    checkPost = hf.raise404Exception(checkPost)
+    checkPost = {
+        "message": "Post updated",
+        "data":  db_con.update(db.TableConstants.POSTSTABLE, cols=cols, where=f"id = {post_id}", post=post)
+    }
+    return checkPost
