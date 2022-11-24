@@ -8,19 +8,6 @@ import app.database as db
 
 app = FastAPI()
 db_con = db.Database()
-all_posts = [
-        {"title": "FastAPI and its advantages",
-        "content": "lorem ipsum FastAPI and its advantages",
-        "published": True,
-        "likes": 35,
-        "id": 1},
-
-        {"title": "Implementing FastAPI",
-        "content": "lorem ipsum Implementing FastAPI",
-        "published": False,
-        "likes": 4,
-        "id": 2}
-    ]
 
 class Post(BaseModel):
     title: str
