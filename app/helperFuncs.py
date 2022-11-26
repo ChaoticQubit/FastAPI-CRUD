@@ -1,4 +1,12 @@
 from fastapi import status, HTTPException
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(schemes="bcrypt", deprecated="auto")
+
+
+def hash(pwd: str):
+    return pwd_context.hash(pwd)
+
 
 def find_post(all_posts, post_id):
     for index, post in enumerate(all_posts):
@@ -15,10 +23,28 @@ def find_post(all_posts, post_id):
 
 
 def raise404Exception(post):
-    if not post["data"]:
+    if not post:
         post = {
             "message": f"No posts were found!",
             "data": None
         }
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=post)
     return post
+
+def raise401Exception(error):
+    if not error:
+        error = {
+            "message": f"Invalid Credentials. Please check your username and password!"
+        }
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=error)
+    return error
+
+def raise403Exception(id1, id2):
+    if id1 != id2:
+        error = {
+            "message": f"Operation Forbidden!"
+        }
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=error)
+
+def verifyPassword(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
