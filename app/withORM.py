@@ -1,8 +1,7 @@
 from fastapi import FastAPI
-from . import models
+from . import models, config
 from app.sqlalchemy_database import engine
 from .Routers import users, posts, auth
-
 
 models.Base.metadata.create_all(bind=engine)
 

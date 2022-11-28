@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from app import models, schemas, sqlalchemy_database as sdb
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
+from .config import settings
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='login')
@@ -13,9 +14,9 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl='login')
 # Algorithm
 # Expiration Time
 
-SECRETKEY = "ndc7d5s539bc732weuhcgby8cqw7eg7gewcybyqe8we7q98qhf8dhncgq7eq98qfuqe9cjehcgcg6e9q8e6e6q9cgq7q0qxkq8wyxhw9"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+SECRETKEY = settings.JWTSecret
+ALGORITHM = settings.JWTAlgorithm
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.JWTExpire
 
 # Create a function to generate a token
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
