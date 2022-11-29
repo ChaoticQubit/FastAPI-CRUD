@@ -24,6 +24,8 @@ class User(Base):
     password = Column(String, nullable=False)
     email = Column(String, nullable=False, unique=True)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+    phone = Column(String, nullable=True)
+    is_active = Column(Boolean, nullable=False, server_default='True')
 
 
 class Votes(Base):
