@@ -46,5 +46,8 @@ def raise403Exception(id1, id2):
         }
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=error)
 
+def raise409Exception(detail):
+    raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=detail)
+
 def verifyPassword(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)

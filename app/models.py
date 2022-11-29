@@ -10,7 +10,6 @@ class Posts(Base):
     title = Column(String, nullable=False)
     content = Column(String, nullable=False)
     published = Column(Boolean, nullable=False, server_default='True')
-    likes = Column(Integer, nullable=False, server_default='0')
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
     owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
 
@@ -25,3 +24,11 @@ class User(Base):
     password = Column(String, nullable=False)
     email = Column(String, nullable=False, unique=True)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+
+
+class Votes(Base):
+    __tablename__ = "votes"
+    
+    post_id = Column(Integer, ForeignKey("posts.id", ondelete="CASCADE"), primary_key=True, nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True, nullable=False)
+    liked_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
